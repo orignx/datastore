@@ -1,0 +1,14 @@
+{
+    "name" : "orignx/datastore",
+    "description" : "A data abstraction tool",
+    "license" : "MIT",
+    "authors": [
+        {
+            "name": "Nana Kwame",
+            "email": "9naquame@gmail.com"
+        }
+    ],
+    "include-path" : [
+        "./"
+    ]
+}
