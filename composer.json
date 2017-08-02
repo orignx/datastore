@@ -1,14 +1,17 @@
 {
-    "name" : "orignx/datastore",
-    "description" : "A data abstraction tool",
-    "license" : "MIT",
+    "name": "orignx/datastore",
+    "description": "A data abstraction tool",
+    "license": "MIT",
     "authors": [
         {
             "name": "Nana Kwame",
             "email": "9naquame@gmail.com"
         }
     ],
-    "include-path" : [
-        "./"
-    ]
+    "autoload" : {
+        "psr-4" : { 
+            "Datastore\\": "src/",
+            "": "src/" 
+        }
+    }
 }
