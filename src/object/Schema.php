@@ -2,7 +2,7 @@
 
 namespace Datastore\Object;
 
-class Schema
+class Schema extends \Datastore\Object
 {
     private $tables;
 
