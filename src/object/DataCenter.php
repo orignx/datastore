@@ -1,8 +1,8 @@
 <?php
 
-namespace Datastore\Object;
+namespace orignx\datastore\object;
 
-class DataCenter extends \Datastore\Object
+class DataCenter extends \orignx\datastore\Object
 {    
     private $servers;
     

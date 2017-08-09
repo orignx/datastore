@@ -10,8 +10,7 @@
     ],
     "autoload" : {
         "psr-4" : { 
-            "Datastore\\": "src/",
-            "": "src/" 
+            "orignx\\datastore\\": "src/"
         }
     }
 }

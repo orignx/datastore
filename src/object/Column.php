@@ -1,8 +1,8 @@
 <?php
 
-namespace Datastore\Object;
+namespace orignx\datastore\object;
 
-class Column extends \Datastore\Object
+class Column extends \orignx\datastore\Object
 {
     
     public function __construct()

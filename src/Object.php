@@ -1,6 +1,6 @@
 <?php
 
-namespace Datastore;
+namespace orignx\datastore;
 
 class Object
 {

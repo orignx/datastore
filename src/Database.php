@@ -1,11 +1,12 @@
 <?php
 
-namespace Datastore\Object;
+namespace orignx\datastore;
 
-class Database extends \Datastore\Object
+class Database extends \orignx\datastore\Object
 {
     public function __construct($params)
     {
+        die('s');
         parent::__construct('database');
         
     }
@@ -23,4 +24,6 @@ class Database extends \Datastore\Object
     {
         
     }
+    
+    
 }

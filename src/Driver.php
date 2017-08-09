@@ -1,6 +1,6 @@
 <?php
 
-namespace Datastore;
+namespace orignx\datastore;
 
 abstract class Driver
 {
@@ -48,7 +48,7 @@ abstract class Driver
     
     abstract public function query();
    
-    abstract public function escape();
+//    abstract public function escape();
     
     abstract public function connect();
     

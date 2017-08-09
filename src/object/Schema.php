@@ -1,8 +1,8 @@
 <?php
 
-namespace Datastore\Object;
+namespace orignx\datastore\object;
 
-class Schema extends \Datastore\Object
+class Schema extends \orignx\datastore\Object
 {
     private $tables;
 
@@ -12,7 +12,7 @@ class Schema extends \Datastore\Object
         
     }
     
-    public function addTable(\Datastore\Object\Table $table)
+    public function addTable(\orignx\datastore\Object\Table $table)
     {
         
     }

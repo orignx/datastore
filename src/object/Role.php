@@ -1,8 +1,8 @@
 <?php
 
-namespace Datastore\Object;
+namespace orignx\datastore\object;
 
-class Role extends \Datastore\Object
+class Role extends \orignx\datastore\Object
 {
     public function __construct()
     {
