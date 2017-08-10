@@ -10,6 +10,7 @@ use orignx\datastore\exceptions\Driver as DriverException;
     private $dsn;
     private $connected;
     private $fetchMode;
+    private $statement;
     
     public function __construct($name, $config)
     {
@@ -39,6 +40,7 @@ use orignx\datastore\exceptions\Driver as DriverException;
     public function disconnect()
     {
         $this->pdo = null;
+        $this->statement = null;
         $this->connected = false;
     }
     
@@ -62,6 +64,11 @@ use orignx\datastore\exceptions\Driver as DriverException;
         return $this->pdo->lastInsertId();
     }
     
+    public function count()
+    {
+        return $this->statment->rowCount();
+    }
+    
     public function quote($string)
     {
         return $this->pdo->quote($string);
@@ -76,23 +83,23 @@ use orignx\datastore\exceptions\Driver as DriverException;
     {
         try {
             if (is_array($bindData)) {
-                $statement = $this->prepare($query, $bindData);
-                $statement->execute();
+                $this->statment = $this->prepare($query, $bindData);
+                $this->statment->execute();
             } else {
-                $statement = $this->pdo->query($query);
+                $this->statment = $this->pdo->query($query);
             }
         } catch (\PDOException $e) {
             $boundData = json_encode($bindData);
             throw new DriverException("{$e->getMessage()} [$query] [BOUND DATA:$boundData]");
         }
         
-        $rows = $this->fetchRows($statement);
-        $statement->closeCursor();
+        $rows = $this->fetchRows();
+        $this->statment->closeCursor();
         return $rows;
     }
     
     private function prepare($query, $bindData) {
-        $statement = $this->pdo->prepare($query);
+        $this->statment = $this->pdo->prepare($query);
         foreach($bindData as $key => $value) {
             switch(gettype($value)) {
                 case "integer": 
@@ -105,15 +112,15 @@ use orignx\datastore\exceptions\Driver as DriverException;
                     $type = \PDO::PARAM_STR;
                     break;
             }
-            $statement->bindValue(is_numeric($key) ? $key + 1: $key, $value, $type);
+            $this->statement->bindValue(is_numeric($key) ? $key + 1: $key, $value, $type);
         }
-        return $statement;
+        return $this->statment;
     }
 
-    private function fetchRows($statement) 
+    private function fetchRows() 
     {
         try {
-            $rows = $statement->fetchAll($this->fetchMode);
+            $rows = $this->statment->fetchAll($this->fetchMode);
             return $rows;
         } catch (\PDOException $e) {
             
