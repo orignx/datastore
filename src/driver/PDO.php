@@ -1,8 +1,8 @@
 <?php
 
-namespace orignx\datastore\driver;
+namespace Orignx\Datastore\Driver;
 
-/*abstract*/ class PDO extends \orignx\datastore\Driver
+/*abstract*/ class PDO extends \Orignx\Datastore\Driver
 {
     private $pdo;
     private $connected;

@@ -1,8 +1,8 @@
 <?php
 
-namespace orignx\datastore\object;
+namespace Orignx\Datastore\Object;
 
-class Table extends orignx\datastore\Object
+class Table extends Orignx\Datastore\Object
 {
     public function __construct($params)
     {

@@ -2,7 +2,7 @@
 
 namespace orignx\datastore;
 
-class Database extends \orignx\datastore\Object
+class Database extends \Orignx\Datastore\Object
 {
     public function __construct($params)
     {

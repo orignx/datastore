@@ -1,8 +1,8 @@
 <?php
 
-namespace orignx\datastore\object;
+namespace Orignx\Datastore\Object;
 
-class Server extends \orignx\datastore\Object
+class Server extends \Orignx\Datastore\Object
 {
     private $port;
     private $type;
