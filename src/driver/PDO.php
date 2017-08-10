@@ -9,10 +9,13 @@ use orignx\datastore\exceptions\Driver as DriverException;
     private $pdo;
     private $dsn;
     private $connected;
+    private $fetchMode;
     
     public function __construct($name, $config)
     {
         parent::__construct('pdo', $config);
+        
+        $this->fetchMode = \PDO::FETCH_ASSOC;
         $this->setDriverName($name);
         $this->setDSN($config);
         $this->connect();
@@ -23,7 +26,6 @@ use orignx\datastore\exceptions\Driver as DriverException;
         if ($this->connected !== true) {
             try {
                 $this->pdo = new \PDO($this->dsn, $this->config['user'], $this->config['password']);
-                $this->pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
                 $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 $this->pdo->setAttribute(\PDO::ATTR_STRINGIFY_FETCHES, false);
                 $this->pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
@@ -38,7 +40,6 @@ use orignx\datastore\exceptions\Driver as DriverException;
     {
         $this->pdo = null;
         $this->connected = false;
-//        $this->pdo = new NullConnection();
     }
     
     public function getPDO()
@@ -51,6 +52,11 @@ use orignx\datastore\exceptions\Driver as DriverException;
         return $this->dsn;
     }
     
+    public function getFetchMode()
+    {
+        return $this->fetchMode;
+    }   
+    
     public function getLastInsertId()
     {
         return $this->pdo->lastInsertId();
@@ -61,6 +67,11 @@ use orignx\datastore\exceptions\Driver as DriverException;
         return $this->pdo->quote($string);
     }
     
+    public function setFetchMode($fetchMode)
+    {
+        $this->fetchMode = $fetchMode;
+    }
+
     public function query($query, $bindData = [])
     {
         try {
@@ -102,7 +113,7 @@ use orignx\datastore\exceptions\Driver as DriverException;
     private function fetchRows($statement) 
     {
         try {
-            $rows = $statement->fetchAll();
+            $rows = $statement->fetchAll($this->fetchMode);
             return $rows;
         } catch (\PDOException $e) {
             
