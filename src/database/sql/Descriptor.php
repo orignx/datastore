@@ -1,6 +1,6 @@
 <?php
 
-namespace orignx\database\sql;
+namespace orignx\datastore\database\sql;
 
 abstract class Descriptor
 {

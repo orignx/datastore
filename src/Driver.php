@@ -5,7 +5,7 @@ namespace orignx\datastore;
 abstract class Driver
 {
     private $type;
-    private $name;
+    protected $name;
     protected $config;
     
     public function __construct($type, $config = null)
@@ -26,9 +26,9 @@ abstract class Driver
         $this->disconnect();
     }
     
-    protected function setDriverName()
+    protected function setDriverName($name)
     {
-        return $this->type;
+        $this->name = $name;
     }
     
     protected function getDriverName()
@@ -45,14 +45,13 @@ abstract class Driver
     {
         return $this->config;
     }
-    
-    abstract public function query();
    
 //    abstract public function escape();
     
     abstract public function connect();
     
     abstract public function disconnect();
-
+    
+    abstract public function query($query, $bindData);
 }
 
