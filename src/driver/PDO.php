@@ -27,6 +27,7 @@ use orignx\datastore\exceptions\Driver as DriverException;
         if ($this->connected !== true) {
             try {
                 $this->pdo = new \PDO($this->dsn, $this->config['user'], $this->config['password']);
+                $this->pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
                 $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 $this->pdo->setAttribute(\PDO::ATTR_STRINGIFY_FETCHES, false);
                 $this->pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
@@ -64,9 +65,14 @@ use orignx\datastore\exceptions\Driver as DriverException;
         return $this->pdo->lastInsertId();
     }
     
-    public function count()
+    public function rowCount()
     {
-        return $this->statment->rowCount();
+        return $this->statement->rowCount();
+    }
+    
+    public function columnCount()
+    {
+        return $this->statement->columnCount();
     }
     
     public function quote($string)
@@ -78,15 +84,20 @@ use orignx\datastore\exceptions\Driver as DriverException;
     {
         $this->fetchMode = $fetchMode;
     }
-
+    
+    public function getPreparedStatement()
+    {
+        return $this->statement;
+    }
+    
     public function query($query, $bindData = [])
     {
         try {
             if (is_array($bindData)) {
-                $this->statment = $this->prepare($query, $bindData);
-                $this->statment->execute();
+                $this->prepare($query, $bindData);
+                $this->statement->execute();
             } else {
-                $this->statment = $this->pdo->query($query);
+                $this->statement = $this->pdo->query($query);
             }
         } catch (\PDOException $e) {
             $boundData = json_encode($bindData);
@@ -94,12 +105,12 @@ use orignx\datastore\exceptions\Driver as DriverException;
         }
         
         $rows = $this->fetchRows();
-        $this->statment->closeCursor();
+        $this->statement->closeCursor();
         return $rows;
     }
     
     private function prepare($query, $bindData) {
-        $this->statment = $this->pdo->prepare($query);
+        $this->statement = $this->pdo->prepare($query);
         foreach($bindData as $key => $value) {
             switch(gettype($value)) {
                 case "integer": 
@@ -114,13 +125,13 @@ use orignx\datastore\exceptions\Driver as DriverException;
             }
             $this->statement->bindValue(is_numeric($key) ? $key + 1: $key, $value, $type);
         }
-        return $this->statment;
     }
 
     private function fetchRows() 
     {
+        $statement = $this->statement;
         try {
-            $rows = $this->statment->fetchAll($this->fetchMode);
+            $rows = $statement->fetchAll($this->fetchMode);
             return $rows;
         } catch (\PDOException $e) {
             
