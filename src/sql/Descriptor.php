@@ -1,16 +1,17 @@
 <?php
 
-namespace orignx\datastore\database\sql;
+namespace orignx\datastore\sql;
 
 abstract class Descriptor
 {
     protected $driver;
     
-    public function __construct($driver) {
+    public function __construct($driver)
+    {
         $this->driver = $driver;
     }
     
-    abstract protected function getTables($schema, $requestedTables, $includeViews);
+    abstract protected function getTables($schema, $includeViews = false);
     
     abstract protected function getColumns(&$table);
     

@@ -189,6 +189,4 @@ abstract class PDO extends \orignx\datastore\Driver
         
         $this->dsn = "{$this->name}:" . implode(';', $dsn);
     }
-    
-    abstract public function escape();
 }
