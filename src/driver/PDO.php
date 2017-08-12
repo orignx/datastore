@@ -4,13 +4,15 @@ namespace orignx\datastore\driver;
 
 use orignx\datastore\exceptions\Driver as DriverException;
 
-/*abstract*/ class PDO extends \orignx\datastore\Driver
+abstract class PDO extends \orignx\datastore\Driver
 {
     private $pdo;
     private $dsn;
     private $connected;
     private $fetchMode;
     private $statement;
+    
+    private static $transactions = 0;
     
     public function __construct($name, $config)
     {
@@ -85,17 +87,62 @@ use orignx\datastore\exceptions\Driver as DriverException;
         $this->fetchMode = $fetchMode;
     }
     
+    public function beginTransaction()
+    {
+        if (self::$transactions++ === 0) {
+            $this->pdo->beginTransaction();
+        }
+    }
+    
+    public function commit()
+    {
+        if (--self::$transactions === 0) {
+            $this->pdo->commit();
+        }
+    }
+    
+    public function rollback()
+    {
+        $this->pdo->rollBack();
+        self::$transactions = 0;
+    }
+    
     public function getPreparedStatement()
     {
         return $this->statement;
+    }
+    
+    public function prepare($query)
+    {
+        $this->statement = $this->pdo->prepare($query);
+    }
+    
+    public function execute($data)
+    {
+        foreach($data as $key => $value) {
+            $this->statement->bindValue(is_numeric($key) ? $key + 1 : $key, $value, $this->getType($value));
+        }
+        $this->statement->execute();
+    }
+
+    public function quotedQuery($query, $bindData = false)
+    {
+        return $this->query($this->quoteIdentifiers($query), $bindData);
+    }
+    
+    public function quoteIdentifiers($query)
+    {
+        return preg_replace_callback('/\"([a-zA-Z\_ ]*)\"/', function($matches) {
+            return $this->escape($matches[1]);
+        }, $query);
     }
     
     public function query($query, $bindData = [])
     {
         try {
             if (is_array($bindData)) {
-                $this->prepare($query, $bindData);
-                $this->statement->execute();
+                $this->prepare($query);
+                $this->statement->execute($bindData);
             } else {
                 $this->statement = $this->pdo->query($query);
             }
@@ -109,33 +156,23 @@ use orignx\datastore\exceptions\Driver as DriverException;
         return $rows;
     }
     
-    private function prepare($query, $bindData) {
-        $this->statement = $this->pdo->prepare($query);
-        foreach($bindData as $key => $value) {
-            switch(gettype($value)) {
-                case "integer": 
-                    $type = \PDO::PARAM_INT;
-                    break;
-                case "boolean": 
-                    $type = \PDO::PARAM_BOOL;
-                    break;
-                default: 
-                    $type = \PDO::PARAM_STR;
-                    break;
-            }
-            $this->statement->bindValue(is_numeric($key) ? $key + 1: $key, $value, $type);
+    private function getType($value)
+    {
+        switch(gettype($value)) {
+            case "integer": 
+                return \PDO::PARAM_INT;
+            case "boolean": 
+                return \PDO::PARAM_BOOL;
+            default: 
+                return \PDO::PARAM_STR;
         }
     }
 
     private function fetchRows() 
     {
         $statement = $this->statement;
-        try {
-            $rows = $statement->fetchAll($this->fetchMode);
-            return $rows;
-        } catch (\PDOException $e) {
-            
-        }
+        $rows = $statement->fetchAll($this->fetchMode);
+        return $rows;
     }
     
     private function setDSN($config)
@@ -152,4 +189,6 @@ use orignx\datastore\exceptions\Driver as DriverException;
         
         $this->dsn = "{$this->name}:" . implode(';', $dsn);
     }
+    
+    abstract public function escape();
 }

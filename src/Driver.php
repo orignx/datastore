@@ -46,7 +46,7 @@ abstract class Driver
         return $this->config;
     }
    
-//    abstract public function escape();
+    abstract public function escape();
     
     abstract public function connect();
     
