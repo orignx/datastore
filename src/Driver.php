@@ -14,15 +14,18 @@ abstract class Driver
         $this->config = $config;
     }
     
-    public function __destruct() {
+    public function __destruct()
+    {
         $this->disconnect();
     }
     
-    public function open() {
+    public function open()
+    {
         $this->connect();
     }
     
-    public function close() {
+    public function close()
+    {
         $this->disconnect();
     }
     

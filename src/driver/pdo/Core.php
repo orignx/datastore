@@ -1,10 +1,10 @@
 <?php
 
-namespace orignx\datastore\driver;
+namespace orignx\datastore\driver\pdo;
 
 use orignx\datastore\exceptions\Driver as DriverException;
 
-abstract class PDO extends \orignx\datastore\Driver
+abstract class Core extends \orignx\datastore\Driver
 {
     private $pdo;
     private $dsn;
@@ -12,13 +12,18 @@ abstract class PDO extends \orignx\datastore\Driver
     private $fetchMode;
     private $statement;
     
+    private $type;
+    protected $name;
+    protected $config;
+    
     private static $transactions = 0;
     
     public function __construct($name, $config)
     {
-        parent::__construct('pdo', $config);
-        
+        $this->type = 'pdo';
+        $this->config = $config;
         $this->fetchMode = \PDO::FETCH_ASSOC;
+        
         $this->setDriverName($name);
         $this->setDSN($config);
         $this->connect();
