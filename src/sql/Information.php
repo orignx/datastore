@@ -15,12 +15,12 @@ abstract class Information extends \orignx\datastore\sql\Descriptor
         }
         
         $this->driver->quotedQuery('SELECT
-            "table_name" as "name",
-            "table_type" as "type",
-            "is_insertable_into" as "insertable",
-            "is_typed" as "typed"
+            "table_name" AS "name",
+            "table_type" AS "type",
+            "is_insertable_into" AS "insertable",
+            "is_typed" AS "typed"
            FROM "information_schema"."tables"
-            WHERE table_schema = ? and ' . $condition . '
+            WHERE table_schema = ? AND ' . $condition . '
             ORDER BY "table_name"',
             $bind
         );
@@ -29,16 +29,16 @@ abstract class Information extends \orignx\datastore\sql\Descriptor
     protected function getColumns(&$table)
     {
         return $this->driver->quotedQuery('SELECT
-            "column_name" as "name",
-            "data_type" as "type",
-            "udt_name" as "class",
-            "is_nullable" as "nulls",
-            "column_default" as "default",
-            "character_maximum_length" as "length",
-            "is_updatable" as "updatable",
-            "ordinal_position" as "position"
+            "column_name" AS "name",
+            "data_type" AS "type",
+            "udt_name" AS "class",
+            "is_nullable" AS "nulls",
+            "column_default" AS "default",
+            "character_maximum_length" AS "length",
+            "is_updatable" AS "updatable",
+            "ordinal_position" AS "position"
            FROM "information_schema"."columns"
-            WHERE "table_name" = ? and "table_schema" = ?
+            WHERE "table_name" = ? AND "table_schema" = ?
             ORDER BY "column_name"',
             [$table['name'], $table['schema']]
         );
@@ -47,10 +47,10 @@ abstract class Information extends \orignx\datastore\sql\Descriptor
     protected function getViews(&$schema)
     {
         return $this->driver->quotedQuery('SELECT
-            "table_name" as "name",
-            "view_definition" as "definition",
-            "is_insertable_into" as "insertable",
-            "is_updatable" as "updatable"
+            "table_name" AS "name",
+            "view_definition" AS "definition",
+            "is_insertable_into" AS "insertable",
+            "is_updatable" AS "updatable"
            FROM "information_schema"."views"
             WHERE "table_schema" = ?
             ORDER BY "table_name"',
@@ -65,7 +65,27 @@ abstract class Information extends \orignx\datastore\sql\Descriptor
 
     protected function getUniqueKeys(&$table)
     {
-        return $this->getConstraints($table, 'UNIQUE');
+        $unique = [];
+        foreach ($this->getConstraints($table, 'UNIQUE') AS $constraint) {
+            $unique[$constraint['name']][] = $constraint['column'];
+        }
+        
+        return $unique;
     }
     
+    private function getConstraints($table, $type)
+    {
+        return $this->driver->quotedQuery('SELECT
+            "tc"."constraint_name" AS "name",
+            "column_name" AS "column"
+           FROM "information_schema"."table_constraints" "tc"
+            JOIN "information_schema"."key_column_usage" "kcu" ON
+               "kcu"."table_name" = "tc"."table_name" AND
+               "kcu"."constraint_name" = "tc"."constraint_name" AND
+               "kcu"."constraint_schema" = "tc"."table_schema"
+            WHERE "tc"."table_name" = ? AND tc.table_schema= ? AND constraint_type = ? 
+            ORDER BY "tc"."constraint_name", "column_name"',
+            [$table['name'], $table['schema'], $type]
+        );
+    }    
 }
