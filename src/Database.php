@@ -24,5 +24,4 @@ class Database extends \orignx\datastore\Object
         
     }
     
-    
 }
