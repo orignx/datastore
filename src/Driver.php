@@ -48,12 +48,12 @@ abstract class Driver
     {
         return $this->config;
     }
-   
-    abstract public function escape();
     
     abstract public function connect();
     
     abstract public function disconnect();
+    
+    abstract public function escape($identifier);
     
     abstract public function query($query, $bindData);
 }
