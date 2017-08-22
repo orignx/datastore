@@ -11,6 +11,8 @@ abstract class Descriptor
         $this->driver = $driver;
     }
     
+    abstract protected function getSchemas();
+    
     abstract protected function getTables($schema, $includeViews = false);
     
     abstract protected function getColumns(&$table);
@@ -24,4 +26,8 @@ abstract class Descriptor
     abstract protected function getForeignKeys(&$table);
     
     abstract protected function getIndices(&$table);
+    
+    public function describe() 
+    {
+    }
 }
