@@ -59,7 +59,7 @@ class Descriptor extends \orignx\datastore\sql\Information
         );
     }
     
-    public function getSchemas()
+    protected function getSchemas()
     {
         return $this->driver->query("SELECT
             schema_name AS name
