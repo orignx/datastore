@@ -40,4 +40,14 @@ class Descriptor extends \orignx\datastore\sql\Information
             $table['name'], $table['schema']
         ));
     }
+    
+    protected function getSchemas()
+    {
+        return $this->driver->query("SELECT
+            schema_name AS name 
+           FROM information_schema.schemata
+            WHERE schema_name <> 'information_schema'
+            ORDER BYschema_name"
+        );
+    }
 }

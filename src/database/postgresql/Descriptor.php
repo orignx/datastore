@@ -58,4 +58,16 @@ class Descriptor extends \orignx\datastore\sql\Information
             ['name' => $table['name'], 'schema' => $table['schema']]
         );
     }
+    
+    public function getSchemas()
+    {
+        return $this->driver->query("SELECT
+            schema_name AS name
+           FROM information_schema.schemata 
+            WHERE schema_name NOT LIKE 'pg_temp%' AND 
+            schema_name NOT LIKE 'pg_toast%' AND 
+            schema_name NOT IN ('pg_catalog', 'information_schema')
+            ORDER BY schema_name"
+        );
+    }
 }
