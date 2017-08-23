@@ -1,6 +1,6 @@
 <?php
 
-namespace orignx\datastore\database\postgresql;
+namespace orignx\datastore\database\pgsql;
 
 class Descriptor extends \orignx\datastore\sql\Information
 {

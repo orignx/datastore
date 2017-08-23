@@ -2,7 +2,7 @@
 
 namespace orignx\datastore;
 
-class Object
+class DBObject
 {
     private $objectType;
     
