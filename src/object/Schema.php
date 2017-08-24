@@ -2,7 +2,7 @@
 
 namespace orignx\datastore\object;
 
-class Schema extends \orignx\datastore\Object
+class Schema extends \orignx\datastore\DBObject
 {
     private $tables;
 
@@ -12,7 +12,7 @@ class Schema extends \orignx\datastore\Object
         
     }
     
-    public function addTable(\orignx\datastore\Object\Table $table)
+    public function addTable(\orignx\datastore\object\Table $table)
     {
         
     }

@@ -2,7 +2,7 @@
 
 namespace orignx\datastore\object;
 
-class Role extends \orignx\datastore\Object
+class Role extends \orignx\datastore\DBObject
 {
     public function __construct()
     {

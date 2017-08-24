@@ -2,7 +2,7 @@
 
 namespace orignx\datastore\object;
 
-class DataCenter extends \orignx\datastore\Object
+class DataCenter extends \orignx\datastore\DBObject
 {    
     private $servers;
     

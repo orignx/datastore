@@ -2,7 +2,7 @@
 
 namespace orignx\datastore\object;
 
-class Index extends \orignx\datastore\Object
+class Index extends \orignx\datastore\DBObject
 {
     public function __construct()
     {

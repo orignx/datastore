@@ -2,7 +2,7 @@
 
 namespace orignx\datastore\object;
 
-class Server extends \orignx\datastore\Object
+class Server extends \orignx\datastore\DBObject
 {
     private $port;
     private $type;

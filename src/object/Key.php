@@ -2,7 +2,7 @@
 
 namespace orignx\datastore\object;
 
-class Key extends \orignx\datastore\Object
+class Key extends \orignx\datastore\DBObject
 {
     
     public function __construct()

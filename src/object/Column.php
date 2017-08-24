@@ -2,7 +2,7 @@
 
 namespace orignx\datastore\object;
 
-class Column extends \orignx\datastore\Object
+class Column extends \orignx\datastore\DBObject
 {
     
     public function __construct()
