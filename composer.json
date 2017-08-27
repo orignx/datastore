@@ -8,6 +8,9 @@
             "email": "9naquame@gmail.com"
         }
     ],
+    "require": {
+        "orignx/utility" : "dev-master"
+    },
     "autoload" : {
         "psr-4" : { 
             "orignx\\datastore\\": "src/"
