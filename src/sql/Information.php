@@ -14,7 +14,7 @@ abstract class Information extends \orignx\datastore\sql\Descriptor
             array_push($bind, 'VIEW');
         }
         
-        $this->driver->quotedQuery('SELECT
+        return $this->driver->quotedQuery('SELECT
             "table_name" AS "name",
             "table_type" AS "type",
             "is_insertable_into" AS "insertable",
