@@ -1,5 +1,7 @@
 <?php
 
+namespace orignx\datastore\sql;
+
 abstract class Manipulator
 {
     abstract protected function addSchema($name);
