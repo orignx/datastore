@@ -16,4 +16,10 @@ class Schema extends \orignx\datastore\DBObject
     {
         
     }
+    
+    public function setTables($tables)
+    {
+        die('uhu');
+        $this->tables = $tables;
+    }
 }
