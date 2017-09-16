@@ -1,7 +1,7 @@
 <?php
 namespace orignx\datastore\exceptions;
 
-class Driver extends \Exception
+class DriverException extends \Exception
 {
     private $exception;
     
@@ -10,4 +10,4 @@ class Driver extends \Exception
         parent::__construct($message);
         $this->exception = $exception;
     }
-}
+}   
