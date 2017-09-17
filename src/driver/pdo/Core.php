@@ -2,7 +2,7 @@
 
 namespace orignx\datastore\driver\pdo;
 
-use orignx\datastore\exceptions\Driver as DriverException;
+use orignx\datastore\exceptions\DriverException;
 
 abstract class Core extends \orignx\datastore\Driver
 {
